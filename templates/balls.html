@@ -1,0 +1,105 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Balls
+{% endblock %}
+
+{% block main %}
+    <main>
+        <canvas id="canvas"></canvas>
+        <script>
+            const canvas = document.getElementById("canvas");
+            const a = canvas.getContext("2d");
+            const xAxis = window.innerWidth;
+            const yAxis = window.innerHeight;
+            canvas.width = xAxis;
+            canvas.height = yAxis;
+            const mouseUp = 0;
+            const mouseDown = 0;
+
+            addEventListener("mousemove", function() {
+            mouseUp = event.clientX;
+            mouseDown = event.clientY;
+            });
+
+            const gravity = 1.2;
+            a.strokeWidth = 7;
+            function randomColor() {
+            return (
+                "rgba(" +
+                Math.round(Math.random() * 255) +
+                "," +
+                Math.round(Math.random() * 255) +
+                "," +
+                Math.round(Math.random() * 255) +
+                "," +
+                Math.ceil(Math.random() * 10) / 10 +
+                ")"
+            );
+            }
+
+            function Ball() {
+            this.color = randomColor();
+            this.radius = Math.random() * 25 + 5;
+            this.startradius = this.radius;
+            this.x = Math.random() * (xAxis - this.radius * 2) + this.radius;
+            this.y = Math.random() * (yAxis - this.radius);
+            this.dy = Math.random() * 2;
+            this.dx = Math.round((Math.random() - 0.5) * 10);
+            this.vel = Math.random() /5;
+            this.update = function() {
+                a.beginPath();
+                a.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+                a.fillStyle = this.color;
+                a.fill();
+            };
+            }
+
+            const balls = [];
+            for (let i = 0; i < 50; i++){
+                balls.push(new Ball());
+            }
+
+            function animate() {
+            if (xAxis != window.innerWidth || yAxis != window.innerHeight) {
+                xAxis = window.innerWidth;
+                yAxis = window.innerHeight;
+                canvas.width = xAxis;
+                canvas.height = yAxis;
+            }
+            requestAnimationFrame(animate);
+            a.clearRect(0, 0, xAxis, yAxis);
+            for (let i = 0; i < balls.length; i++) {
+                balls[i].update();
+                balls[i].y += balls[i].dy;
+                balls[i].x += balls[i].dx;
+                if (balls[i].y + balls[i].radius >= yAxis) {
+                balls[i].dy = -balls[i].dy * gravity;
+                } else {
+                balls[i].dy += balls[i].vel;
+                }
+                if(balls[i].x + balls[i].radius > xAxis || balls[i].x - balls[i].radius < 0){
+                    balls[i].dx = -balls[i].dx;
+                }
+                if(mouseUp > balls[i].x - 20 &&
+                mouseUp < balls[i].x + 20 &&
+                mouseDown > balls[i].y -50 &&
+                mouseDown < balls[i].y +50 &&
+                balls[i].radius < 70){
+                    balls[i].radius +=5;
+                } else {
+                    if(balls[i].radius > balls[i].startradius){
+                    balls[i].radius += -5;
+                    }
+                }
+            }
+        }
+            animate();
+
+            setInterval(function() {
+            balls.push(new Ball());
+            balls.splice(0, 1);
+            }, 400);
+        </script>
+    </main>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Quote
+{% endblock %}
+
+{% block main %}
+<div id="quote" class="card">
+    <div class="card-header">
+      <h1>Random Quote Generator</h1>
+    </div>
+    <br>
+    <div class="card-body">
+      <blockquote class="blockquote mb-0">
+        <p id="ranQuotes">Strive not to be a success, but rather to be of value. - Albert Einstein</p>
+      </blockquote>
+      <br>
+      <br>
+<button id="changeQuote" class="btn text-center btn-danger">Change Quote</button>
+    </div>
+  </div>
+    <script>
+        const quotes = [
+            "The only true wisdom is in knowing you know nothing. - Socrates",
+            "Fortune favours the bold. - Virgil",
+            "The journey of a thousand miles begins with one step. - Lao Tzu",
+            "Life is what happens when you're busy making other plans. - John Lennon",
+            "Strive not to be a success, but rather to be of value. - Albert Einstein",
+            "Never argue with stupid people, they will drag you down to their level and then beat you with experience. - Mark Twain"
+        ]
+
+        const btn = document.querySelector("#changeQuote");
+        btn.addEventListener("click", function () {
+            currQuote = document.querySelector("#ranQuotes").innerHTML
+            do {
+                text = quotes[Math.round(Math.random() * (quotes.length - 1))]
+            } while (text === currQuote)
+            document.querySelector("#ranQuotes").innerHTML = text
+        });
+    </script>
+{% endblock %}

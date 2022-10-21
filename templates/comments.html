@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Comments
+{% endblock %}
+
+{% block main %}
+<div class="header">
+    <h1>Add a Comment</h1>
+    <br>
+</div>
+<div class="container">
+    <div class="section">
+
+        <h4>Some Feedback would be nice!</h4>
+        <br>
+        <form action="/comments" method = "post">
+            <input name="comments" class="form-control" placeholder="Add a comment..." type="text">
+            <br>
+            <button value="submit" class="btn text-center btn-primary">Submit</button>
+        </form>
+        <br>
+    </div>
+
+    <div class="section">
+
+        <center><h2>All Comments</h2>
+        <hr>
+        <table>
+            <thead>
+                <tr>
+                    <th>Comments</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Loop through the database entries to display them in this table -->
+                {% for comments in comments %}
+                    <tr>
+                        <td>{{ comments.comments }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </center>
+    </div>
+</div>
+{% endblock %}
